@@ -1,0 +1,4 @@
+Commit hash: Git commit не найден
+Commit date: Дата коммита не найдена
+Build time: 2025-11-11 13:30:49
+Студент №8
