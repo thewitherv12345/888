@@ -2,27 +2,32 @@ name: Build Info Update
 
 on:
   push:
-    branches: [ main ]  # Запуск при push в main (можно изменить на другие ветки)
+    branches: [ main ]
+    paths-ignore:
+      - 'build_info.txt'
+
+permissions:
+  contents: write  # This grants read/write access
 
 jobs:
   build_info:
-    runs-on: ubuntu-latest  # ОС для выполнения (Linux)
+    runs-on: ubuntu-latest
     steps:
       - name: Клонирование репозитория
-        uses: actions/checkout@v4  # Обновил до v4 для актуальности
+        uses: actions/checkout@v4
 
       - name: Установка Python
-        uses: actions/setup-python@v5  # Обновил до v5
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.12'  # Версия Python (можно изменить)
+          python-version: '3.12'
 
       - name: Обновление файла build_info.txt
-        run: python PJ11_gitinfo_08.py  # Замените на имя вашего файла скрипта
+        run: python PJ11_gitinfo_08.py
 
       - name: Сохранение изменений
         run: |
           git config user.name "CI Bot"
           git config user.email "ci@example.com"
-          git add build_info.txt
-          git commit -m "Автоматическое обновление build_info.txt [skip ci]"  # [skip ci] чтобы избежать цикла
-          git push
+          git add build_info.txt || echo "No changes to add"
+          git commit -m "Автоматическое обновление build_info.txt [skip ci]" || echo "No changes to commit"
+          git push || echo "Push failed"
