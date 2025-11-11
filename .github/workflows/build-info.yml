@@ -29,5 +29,5 @@ jobs:
           git config user.name "CI Bot"
           git config user.email "ci@example.com"
           git add build_info.txt || echo "No changes to add"
-          git commit -m "Автоматическое обновление build_info.txt" || echo "No changes to commit"
+          git commit -m "Автоматическое обновление build_info.txt [skip ci]" || echo "No changes to commit"
           git push || echo "Push failed"
