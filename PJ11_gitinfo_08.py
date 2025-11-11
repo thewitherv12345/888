@@ -1,23 +1,18 @@
 import subprocess
 from datetime import datetime
 
-def get_git_commit_hash():
-    try:
-        commit_hash = subprocess.check_output(['git', 'rev-parse', 'HEAD']).decode('utf-8').strip()
-        return commit_hash
-    except subprocess.CalledProcessError:
-        return "Git commit не найден"
-
-def get_git_commit_date():
-    try:
-        commit_date = subprocess.check_output(['git', 'log', '-1', '--format=%cd']).decode('utf-8').strip()
-        return commit_date
-    except subprocess.CalledProcessError:
-        return "Дата коммита не найдена"
 
 def save_build_info():
-    commit_hash = get_git_commit_hash()
-    commit_date = get_git_commit_date()
+    try:
+        commit_hash = subprocess.check_output(['git', 'rev-parse', 'HEAD']).decode('utf-8').strip()
+    except subprocess.CalledProcessError:
+        commit_hash = "Git commit не найден"
+
+    try:
+        commit_date = subprocess.check_output(['git', 'log', '-1', '--format=%cd']).decode('utf-8').strip()
+    except subprocess.CalledProcessError:
+        commit_date = "Дата коммита не найдена"
+
     build_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     with open("build_info.txt", "w", encoding="utf-8") as file:
@@ -26,7 +21,6 @@ def save_build_info():
         file.write(f"Build time: {build_time}\n")
         file.write("Студент №8\n")
 
-    print("Файл build_info.txt обновлён.")
 
 if __name__ == "__main__":
     save_build_info()
